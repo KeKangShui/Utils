@@ -1,0 +1,50 @@
+初始版
+
+<html>
+<body style="margin:0">
+    <script>
+        CefSharp.BindObjectAsync("qsPlus").then(() => { console.log('init') });
+        window.onbeforeunload = function () {
+            qsPlus.setResult('success');
+            qsPlus.shutDown();
+        };
+        setInterval(() => {
+            if (document.querySelectorAll('#login').length == 0){
+            qsPlus.setResult('fail');
+            qsPlus.shutDown();
+            }
+        }, 200);
+    </script>
+    <iframe id="login" width="100%" height="100%" style="margin: 0;padding:0;border-width:0"
+            src="https://www.hg0083.com:6789/member-center/tools#module/member/action/dragAuth/username/{username}/password/{password}" />
+</body>
+</html>
+
+
+修改完善后的
+
+<html>
+<body style="margin:0">
+    <script>
+        CefSharp.BindObjectAsync("qsPlus").then(() => { console.log('init'); memberinfo(); });
+        setInterval(() => {
+            if (document.querySelectorAll('#login').length == 0) {
+                qsPlus.setResult('fail');
+                qsPlus.shutDown();
+            }
+        }, 200);
+        function memberinfo() {
+            fetch('https://www.hg0083.com:6789/member-center/member-info').then(res => {
+                return res.json();
+            }).then(res => {
+                if (res.returnCode == 0) {
+                    qsPlus.setResult(JSON.stringify(res.returnData, null, 2));
+                    qsPlus.shutDown();
+                }
+            })
+        }
+    </script>
+    <iframe id="login" style="margin: 0;padding:0;border-width:0; width:100%; height:100%; "
+            src="https://www.hg0083.com:6789/member-center/tools#module/member/action/dragAuth/username/xiang1122/password/aa789789" />
+</body>
+</html>
